@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>CS494 - Assignment 2</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<canvas id="myCanvas">
+		</canvas>
+		<input type="text" id="drawInput">
+		<a href="#" onclick="draw();">Draw!</a>
+		<table>
+			<caption>A table for CS494 - Assignment 2</caption>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Column 1</th>
+					<th>Column 2</th>
+					<th>Column 3</th>
+					<th>Column 4</th>
+					<th>Column 5</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>Row 1</th>
+					<td>Column 1, Row 1</td>
+					<td>Column 2, Row 1</td>
+					<td>Column 3, Row 1</td>
+					<td>Column 4, Row 1</td>
+					<td>Column 5, Row 1</td>
+				</tr>
+				<tr>
+					<th>Row 2</th>
+					<td>Column 1, Row 2</td>
+					<td>Column 2, Row 2</td>
+					<td>Column 3, Row 2</td>
+					<td>Column 4, Row 2</td>
+					<td>Column 5, Row 2</td>
+				</tr>
+				<tr>
+					<th>Row 3</th>
+					<td>Column 1, Row 3</td>
+					<td>Column 2, Row 3</td>
+					<td>Column 3, Row 3</td>
+					<td>Column 4, Row 3</td>
+					<td>Column 5, Row 3</td>
+				</tr>
+				<tr>
+					<th>Row 4</th>
+					<td>Column 1, Row 4</td>
+					<td>Column 2, Row 4</td>
+					<td>Column 3, Row 4</td>
+					<td>Column 4, Row 4</td>
+					<td>Column 5, Row 4</td>
+				</tr>
+				<tr>
+					<th>Row 5</th>
+					<td>Column 1, Row 5</td>
+					<td>Column 2, Row 5</td>
+					<td>Column 3, Row 5</td>
+					<td>Column 4, Row 5</td>
+					<td>Column 5, Row 5</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="1">Footer 1</td>
+					<td colspan="4">Footer 2</td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<br>
+
+		<dl>
+			<dt>My Name</dt>
+			<dd>Aryan</dd>
+			<dt>My Age</dt>
+			<dd>23</dd>
+			<dt>My Gender</dt>
+			<dd>Male</dd>
+		</dl>
+
+		<br>
+
+		<form method="post" name="form">
+			<input type="text" name="text_input" id="text_input">
+			<br>
+			<input type="number" name="numerical_input" id="numerical_input">
+			<br>
+			<input type="password" name="password_input" id="password_input">
+			<br>
+			<input type="radio" name="candy" value="Snickers">Snickers
+			<br>
+			<input type="radio" name="candy" value="Skittles">Skittles
+			<br>
+			<input type="radio" name="candy" value="Mentos">Mentos
+			<br>
+			<input type="submit" onclick="checkForm();">
+		</form>
+
+		<br>
+
+		<form method="get">
+			<input type="text" name="text_input">
+			<br>
+			<input type="number" name="numerical_input">
+			<br>
+			<input type="password" name="password_input">
+			<br>
+			<input type="radio" name="candy" value="Snickers">Snickers
+			<br>
+			<input type="radio" name="candy" value="Skittles">Skittles
+			<br>
+			<input type="radio" name="candy" value="Mentos">Mentos
+			<br>
+			<input type="submit">
+		</form>
+
+		<br>
+
+		<div id="red"></div>
+		<div id="orange"></div>
+		<div id="yellow"></div>
+		<div id="green"></div>
+		<div id="indigo"></div>
+		<div id="blue"></div>
+
+		<script>
+			function checkForm() {
+				if(document.getElementById("text_input").value == "") {
+					alert("You left the text field empty!");
+				}
+				if(document.getElementById("numerical_input").value == "") {
+					alert("You left the numerical field empty!");
+				}
+				if(document.getElementById("password_input").value == "") {
+					alert("You left the password field empty!");
+				}
+			}
+			function draw() {
+				if(document.getElementById("drawInput").value == "") {
+					alert("Please enter a string for me to draw!");
+				}
+				else {
+					var input = document.getElementById("drawInput").value;
+					var c = document.getElementById("myCanvas");
+					var ctx = c.getContext("2d");
+					ctx.font = "30px Comic Sans MS";
+					ctx.fillText(input,10,50);
+				}
+			}
+		</script>
+	</body>
+</html>

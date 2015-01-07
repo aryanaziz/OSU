@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>CS494 - Assignment 4</title>
+	</head>
+	<body onload="loadLocalStorage()">
+		<p>While testing, please note that I am pulling my values in Fahrenheit and MPH (not the Metric units)</p>
+		<input type="text" id="cityInput">
+		<select id="stateInput">
+			<option value="CA">CA</option>
+			<option value="OR">OR</option>
+			<option value="WA">WA</option>
+		</select><br>
+		<input type="checkbox" id="windInput" value="windInput">Wind<br>
+		<input type="checkbox" id="maxTempInput" value="maxTempInput">Max Temperature<br>
+		<input type="checkbox" id="minTempInput" value="minTempInput">Min Temperature<br>
+		<input type="checkbox" id="currentTempInput" value="currentTempInput">Current Temperature<br>
+		<input type="submit" value="Get Weather" onclick="getWeatherData()">
+		<input type="submit" name="save" value="Save Settings" onclick="saveLocalStorage()">
+		<div id="weatherOutput">
+			<span class="bold">City: </span><div id="cityOutput"></div><br>
+			<span class="bold">State: </span><div id="stateOutput"></div><br>
+			<span class="bold">Wind: </span><div id="windOutputSpeed"></div> - <div id="windOutputDirection"></div><br>
+			<span class="bold">Max Temperature: </span><div id="maxTempOutput"></div><br>
+			<span class="bold">Min Temperature: </span><div id="minTempOutput"></div><br>
+			<span class="bold">Current Temperature: </span><div id="currentTempOutput"></div><br>
+		</div>
+		<script src="weather.js"></script>
+	</body>
+</html>

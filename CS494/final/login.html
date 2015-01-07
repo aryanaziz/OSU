@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>CS494 - Final - Login</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/bootstrap.css">
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle Navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Final Project</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav pull-right" id="userInfo">
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container" id="content">
+			<div class="row">
+				<div class="page-header">
+					<h1>Please Login</h1>
+					<hr class="colorgraph">
+				</div>
+				<div class="col-md-6 col-md-offset-3">
+					<div id="error"></div>
+					<div id="loginForm">
+						<input type="text" class="form-control" placeholder="Username" id="username" required>
+						<br>
+						<input type="password" class="form-control" placeholder="Password" id="password" required>
+						<br>
+						<div class="row">
+							<div class="col-md-6">
+								<button class="btn btn-md btn-block btn-primary" type="submit" value="Login" onclick="ajaxLogin()">
+									Login
+								</button>
+							</div>
+							<div class="col-md-6">
+								<a href="register.html" class="btn btn-md btn-block btn-success">
+									Register
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/site.js"></script>
+		<script>
+			var httpRequest;
+			if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+				httpRequest = new XMLHttpRequest();
+			} else if (window.ActiveXObject) { // IE 8 and older
+				httpRequest = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+
+			function ajaxLogin() {
+				var username = document.getElementById('username').value;
+				var password = document.getElementById('password').value;
+				var queryString = '?username='+username+'&password='+password;
+				var requestURL = 'http://aryanaziz.com/OSU/2014/Fall/CS494/final/login.php' + queryString;
+				httpRequest.onreadystatechange = Contents;
+				httpRequest.open('GET', requestURL);
+				httpRequest.send();
+			}
+
+			function Contents() {
+				if(httpRequest.readyState === 4) {
+					var response = JSON.parse(httpRequest.responseText);
+					if(response.success === 'false') {
+						document.getElementById('error').innerHTML = '';
+						document.getElementById('error').innerHTML += '<div class="alert alert-danger"><strong>Oh Snap!</strong> '+response.reason+'</div>';
+					}
+					else {
+						localStorage.setItem('loggedIn', response.success);
+						localStorage.setItem('userId', response.id);
+						if(localStorage.getItem('loggedIn') === 'true') {
+							window.location = "http://aryanaziz.com/OSU/2014/Fall/CS494/final/index.html";
+						}
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

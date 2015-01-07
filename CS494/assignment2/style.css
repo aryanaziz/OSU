@@ -1,0 +1,72 @@
+tbody th {
+	font-style: italic;
+	font-weight: 400;
+}
+
+table, td, th {
+	border: 1px solid black;
+}
+
+tbody tr td:nth-child(2) {
+	color: red;
+}
+
+tbody tr td:nth-child(4) {
+	color: blue;
+}
+
+dt:hover +dd {
+	background-color: purple;
+}
+
+#red {
+	background-color: red;
+	margin-top: 20px;
+	margin-left: 5%;
+	height: 100px;
+	width: 15%;
+	float: left;
+}
+
+#orange {
+	background-color: orange;
+	margin-top: 20px;
+	margin-left: 30%;
+	height: 100px;
+	width: 50%;
+}
+
+#yellow {
+	background-color: yellow;
+	margin-top: 75px;
+	margin-left: 100px;
+	height: 200px;
+	width: 50px;
+	float: left;
+}
+
+#green {
+	background-color: green;
+	margin-top: 75px;
+	margin-left: 170px;
+	height: 200px;
+	width: 150px;
+}
+
+#blue {
+	background-color: blue;
+	margin-top: 75px;
+	height: 200px;
+	width: 50px;
+	float: right;
+}
+
+#indigo {
+	background-color: indigo;
+	margin-top: 75px;
+	margin-right: 100px;
+	margin-left: 20px;
+	height: 200px;
+	width: 150px;
+	float: right;
+}

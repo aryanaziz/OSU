@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>CS494 - Final - Register</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/bootstrap.css">
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle Navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Final Project</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav pull-right" id="userInfo">
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container" id="content">
+			<div class="row">
+				<div class="page-header">
+					<h1>Register Here</h1>
+					<hr class="colorgraph">
+				</div>
+				<div class="col-md-6 col-md-offset-3">
+					<div id="error"></div>
+					<div id="registration">
+						<input type="text" class="form-control" placeholder="Username" required="" id="username">
+						<br>
+						<input type="password" class="form-control" placeholder="Password" required="" id="password">
+						<br>
+						<input type="text" class="form-control" placeholder="Name" id="name">
+						<br>
+						<input type="text" class="form-control" placeholder="Email" id="email">
+						<br>
+						<a href="#" class="btn btn-md btn-block btn-success" onclick="register()">Register</a>
+					</div>
+				</div>
+		</div>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/site.js"></script>
+		<script>
+			var httpRequest;
+			if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+				httpRequest = new XMLHttpRequest();
+			} else if (window.ActiveXObject) { // IE 8 and older
+				httpRequest = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+
+			//From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+			function validateEmail(email) { 
+    			var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    			return re.test(email);
+			} 
+
+			function register() {
+				var username = document.getElementById('username').value;
+				var password = document.getElementById('password').value;
+				var name = document.getElementById('name').value;
+				var email = document.getElementById('email').value;
+				if(email != "") {
+					if(validateEmail(email) == false) {
+						document.getElementById('error').innerHTML = '';
+						document.getElementById('error').innerHTML += '<div class="alert alert-danger"><strong>Oh Snap!</strong> Email is not valid! Please re-enter a valid email.</div>';
+					}
+					if(validateEmail(email) == true) {
+						var queryString = '?username='+username+'&password='+password+'&name='+name+'&email='+email;
+						var requestURL = 'http://aryanaziz.com/OSU/2014/Fall/CS494/final/register.php' + queryString;
+						httpRequest.onreadystatechange = Contents;
+						httpRequest.open('GET', requestURL);
+						httpRequest.send();
+					}
+				}
+				if(email == "") {
+					var queryString = '?username='+username+'&password='+password+'&name='+name+'&email='+email;
+					var requestURL = 'http://aryanaziz.com/OSU/2014/Fall/CS494/final/register.php' + queryString;
+					httpRequest.onreadystatechange = Contents;
+					httpRequest.open('GET', requestURL);
+					httpRequest.send();
+				}
+			}
+
+			function Contents() {
+				if(httpRequest.readyState === 4) {
+					var response = JSON.parse(httpRequest.responseText);
+					if(response.success === 'false') {
+						document.getElementById('error').innerHTML = '';
+						document.getElementById('error').innerHTML += '<div class="alert alert-danger"><strong>Oh Snap!</strong> Username is already taken. Please Try Again with a different username!</div>';
+					}
+					else {
+						localStorage.setItem('loggedIn', response.success);
+						localStorage.setItem('userId', response.id);
+						document.getElementById('error').innerHTML = '';
+						document.getElementById('error').innerHTML += '<div class="alert alert-success"><strong>Success!</strong> Your account has been created and you have been signed in! Redirecting you to the index page in 5 seconds...</div>';
+						if(localStorage.getItem('loggedIn') === 'true') {
+							document.getElementById('registration').style.visibility = "hidden";
+							setTimeout(function() {
+								window.location.href = "http://aryanaziz.com/OSU/2014/Fall/CS494/final/index.html";
+							}, 5000)
+						}
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
