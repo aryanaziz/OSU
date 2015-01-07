@@ -1,0 +1,2 @@
+myProgram: A11E1.cpp A11E1-f.cpp A11E1-g.cpp
+	g++ -o myProgram A11E1.cpp A11E1-f.cpp A11E1-g.cpp

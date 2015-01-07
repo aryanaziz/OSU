@@ -1,0 +1,20 @@
+1. How is the graph stored in the provided code -- adjacency matrix or edge list?
+	An edge list, as the adjacency matrix would store all of the data in an array. The memory usage for an edge list is much more memory-friendly because the size is based on the total number of verticies/edges but for an adjacency matrix it's squared that since it's a full matrix with the x and y values being the various verticies. 
+
+
+2. Which of the graphs are connected? How can you tell?
+	From using the recursive DFS function, it looks as though all of the graphs are connected except for graph 3. Looking at the code itself, this also makes sense as there are less edges than there are vertices. Meaning it's impossible for all of the vertices to be connected. 
+
+3. Imagine that we ran each search in the other direction (from destination to source, instead of source to
+destination) -- would the output change at all? What if the graphs were directed graphs?
+	The output should remain the same as long as the graph was not directed because all of the vertices would still be pointing to one another in the same connection that they were before. However, if the graph was directed then the output would change as the verticies could become unreachable from the other way around. 
+
+
+4. What are a few pros and cons of DFS vs. BFS?
+	DFS normally has less memory necessities because you don't necessarily have to store all of the child pointers at each level. Because of this, graphs that have a high number of nodes will cause BFS to have huge memory queues as it has to store all of them. 
+
+	BFS, however, will give the shortest possible route and with graphs that are relatively small the memory is also not a factor. 
+
+
+5. What's the Big O execution time to determine if a node is reachable from another node?
+	I believe they should both be O(n) where, in this case, n is the number of verticies + the number of edges. 
