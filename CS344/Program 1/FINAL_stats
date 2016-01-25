@@ -1,0 +1,214 @@
+#!/bin/bash
+
+#####
+#Author: Aryan Aziz
+#CS344
+##
+#Statistics Assignment
+#Program will take in a tab-delimited text document and will give you the averages and medians by columns or by row
+#Usage: stats {-rows|-cols} [file]
+#####
+
+if [ "$#" -eq 1 ] #If there is only 1 command line argument
+	then
+		myvar=()
+		myvar=$(cat) #Set an array to the cat data
+		if [ -n "${myvar}" ] #If they are piping with cat
+			then
+				if [[ $1 == -r* ]]; #Rows
+					then
+						numRows=$(echo "${myvar}"|awk 'END {print NR}' ) #Get number of rows
+						numCols=$(echo "${myvar}"|awk 'END {print NF}' ) #Get number of columns
+						counter=0
+						total=0
+						a=($(echo "${myvar}"|awk '{for(i=1; i<=NF; i++) print $i}' )) #put the text file into an array
+						for ((i=0; i<$numRows; i++)) #iterate through each row
+						do
+							for((j=0; j<$numCols; j++)) #and iterate through each value in each row
+							do
+								total=$((total + ${a[counter]})) #add them up to the total
+								tempArr+=(${a[counter]}) #create temporary array to sort for median
+								((counter++)) #increase the counter to move to the next value
+							done
+							halves=$((numCols / 2)) #calculate the halves, used for rounding and median
+							tempArr=($(for each in ${tempArr[@]}; do echo $each; done | sort)) #Sort the temporary array
+							if [ $((numCols%2)) -eq 0 ]; #If the number of columns is even
+								then
+									index=$((halves)) #Go to the higher middle
+									median=${tempArr[index]} 
+								else
+									index=$halves #go to the middle
+									median=${tempArr[index]}
+							fi
+							average=$((total + halves)) #make the numerator the total + halves
+							average=$((average / numCols)) #divide the numerator by the number of items
+							total=0 #reset total for the next one
+							unset tempArr #reset the tempArr for the next one
+							averageArr+=($average) #Add the averages to an array we'll print out later
+							medianArr+=($median) #Add the medians to an array we'll print out later
+						done
+						#Print out the values
+						echo "Average Median"
+						for((i=0;i<$numRows;i++))
+						do
+							echo "${averageArr[i]}	${medianArr[i]}"
+						done 
+				elif [[ $1 == -c* ]]; #Columns
+					then
+						numRows=$(echo "${myvar}"|awk 'END {print NR}' ) #Get number of rows
+						numCols=$(echo "${myvar}"|awk 'END {print NF}' ) #Get number of columns
+						counter=0
+						total=0
+						for((i=1; i<=$numCols; i++))
+						do
+							a+=($(echo "${myvar}"|awk '{print $var}' var="$i" )) #Go through each column and place it into the a array. Pass $i from bash to awk
+						done
+						for ((i=0; i<$numCols; i++)) #iterate through each column
+						do
+							for((j=0; j<$numRows; j++)) #and iterate through each value in each column
+							do
+								total=$((total + ${a[counter]})) #add them up to the total
+								tempArr+=(${a[counter]}) #create temporary array to sort for median
+								((counter++)) #increase the counter to move to the next value
+							done
+							halves=$((numRows / 2)) #calculate the halves, used for rounding and median
+							tempArr=($(for each in ${tempArr[@]}; do echo $each; done | sort)) #Sort the temporary array
+							if [ $((numRows%2)) -eq 0 ]; #If the number of rows is even
+								then
+									index=$((halves)) #Go to the higher middle
+									median=${tempArr[index]}
+								else
+									index=$halves #go to the middle
+									median=${tempArr[index]}
+							fi
+							average=$((total + halves)) #make the numerator the total + halves
+							average=$((average / numRows)) #divide the numerator by the number of items
+							total=0 #reset total for the next one
+							unset tempArr #reset the tempArr for the next one
+							averageArr+=($average) #Add the averages to an array we'll print out later
+							medianArr+=($median) #Add the medians to an array we'll print out later
+						done
+						#Print out the values
+						echo "Averages:"
+						for((i=0;i<$numRows;i++))
+						do
+							printf "${averageArr[i]}	"
+						done
+						printf "\n"
+						echo "Medians:"
+						for((i=0;i<$numRows;i++))
+						do
+							printf "${medianArr[i]}	"
+						done
+						printf "\n"
+				else #Neither
+					echo "Usage: stats {-rows|-cols} [file]"
+					false #Set the error code
+				fi
+		else #If they didn't pipe anything in with cat
+			echo "Usage: stats {-rows|-cols} [file]"
+			false #set the error code
+		fi
+elif [ "$#" -eq 2 ] #If there are 2 command line arguments
+	then
+		FILE=$2 #Set the var to the file name
+		if [ -r $FILE ]; #If the file is readable (exists and permissions are good)
+			then
+				if [[ $1 == -r* ]]; #Rows
+					then
+						numRows=$(awk 'END {print NR}' $FILE) #Get number of rows
+						numCols=$(awk 'END {print NF}' $FILE) #Get number of columns
+						counter=0
+						total=0
+						a=($(awk '{for(i=1; i<=NF; i++) print $i}' $FILE)) #put the text file into an array
+						for ((i=0; i<$numRows; i++)) #iterate through each row
+						do
+							for((j=0; j<$numCols; j++)) #and iterate through each value in each row
+							do
+								total=$((total + ${a[counter]})) #add them up to the total
+								tempArr+=(${a[counter]}) #create temporary array to sort for median
+								((counter++)) #increase the counter to move to the next value
+							done
+							halves=$((numCols / 2)) #calculate the halves, used for rounding and median
+							tempArr=($(for each in ${tempArr[@]}; do echo $each; done | sort)) #Sort the temporary array
+							if [ $((numCols%2)) -eq 0 ]; #If the number of columns is even
+								then
+									index=$((halves + 1)) #Go to the higher middle
+									median=${tempArr[index]} 
+								else
+									index=$halves #go to the middle
+									median=${tempArr[index]}
+							fi
+							average=$((total + halves)) #make the numerator the total + halves
+							average=$((average / numCols)) #divide the numerator by the number of items
+							total=0 #reset total for the next one
+							unset tempArr #reset the tempArr for the next one
+							averageArr+=($average) #Add the averages to an array we'll print out later
+							medianArr+=($median) #Add the medians to an array we'll print out later
+						done
+						#Print out the values
+						echo "Average Median"
+						for((i=0;i<$numRows;i++))
+						do
+							echo "${averageArr[i]}	${medianArr[i]}"
+						done
+				elif [[ $1 == -c* ]]; #Columns
+					then
+						numRows=$(awk 'END {print NR}' $FILE) #Get number of rows
+						numCols=$(awk 'END {print NF}' $FILE) #Get number of columns
+						counter=0
+						total=0
+						for((i=1; i<=$numCols; i++))
+						do
+							a+=($(awk '{print $var}' var="$i" $FILE)) #Go through each column and place it into the a array. Pass $i from bash to awk
+						done
+						for ((i=0; i<$numCols; i++)) #iterate through each column
+						do
+							for((j=0; j<$numRows; j++)) #and iterate through each value in each column
+							do
+								total=$((total + ${a[counter]})) #add them up to the total
+								tempArr+=(${a[counter]}) #create temporary array to sort for median
+								((counter++)) #increase the counter to move to the next value
+							done
+							halves=$((numRows / 2)) #calculate the halves, used for rounding and median
+							tempArr=($(for each in ${tempArr[@]}; do echo $each; done | sort)) #Sort the temporary array
+							if [ $((numRows%2)) -eq 0 ]; #If the number of rows is even
+								then
+									index=$((halves)) #Go to the higher middle
+									median=${tempArr[index]}
+								else
+									index=$halves #go to the middle
+									median=${tempArr[index]}
+							fi
+							average=$((total + halves)) #make the numerator the total + halves
+							average=$((average / numRows)) #divide the numerator by the number of items
+							total=0 #reset total for the next one
+							unset tempArr #reset the tempArr for the next one
+							averageArr+=($average) #Add the averages to an array we'll print out later
+							medianArr+=($median) #Add the medians to an array we'll print out later
+						done
+						#Print out the values
+						echo "Averages:"
+						for((i=0;i<$numRows;i++))
+						do
+							printf "${averageArr[i]}	"
+						done
+						printf "\n"
+						echo "Medians:"
+						for((i=0;i<$numRows;i++))
+						do
+							printf "${medianArr[i]}	"
+						done
+						printf "\n"
+				else #Neither
+					echo "Usage: stats {-rows|-cols} [file]"
+					false
+				fi
+		else
+			echo "stats: cannot read $FILE" >&2
+			false
+		fi
+else #All other number of command line arguments
+	echo "Usage: stats {-rows|-cols} [file]"
+	false
+fi

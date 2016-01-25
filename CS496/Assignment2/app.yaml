@@ -1,0 +1,41 @@
+application: cs494-assignment2
+version: 001
+runtime: php
+api_version: 1
+
+handlers:
+- url: /
+  script: index.php
+
+- url: /home
+  script: index.php
+
+- url: /createtable
+  script: createTable.php
+
+- url: /createuser
+  script: createUser.php
+
+- url: /css
+  static_dir: css
+
+- url: /js
+  static_dir: js
+
+- url: /fonts
+  static_dir: fonts
+
+- url: /submitUser.php
+  script: submitUser.php
+
+- url: /submitUser
+  script: submitUser.php
+
+- url: /edituser
+  script: editUser.php
+
+- url: /edit.php
+  script: edit.php
+
+- url: /edit
+  script: edit.php

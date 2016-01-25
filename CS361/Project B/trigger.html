@@ -1,0 +1,22 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<form action="updatetrigger.php" method="post">
+			<input type="number" name="trigger" <?php
+				$dbhost = 'localhost';
+				$dbuser = 'afgntcom_OSU361';
+				$dbpass = 'cs361';
+				$dbname = 'afgntcom_OSUCS361';
+				$con = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+
+				$result = mysqli_query($con,"SELECT * FROM cs361_triggers WHERE user_id = 1");
+
+				while($row = mysqli_fetch_row($result)) {
+					echo "value=\"$row[1]\""
+				}
+			?>>
+			<input type="submit" value="Update">
+		</form>
+	</body>
+</html>

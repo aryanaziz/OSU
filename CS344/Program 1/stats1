@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#Calculate Average of Rows
+numRows=$(awk 'END {print NR}' $1) #Get number of rows
+numCols=$(awk 'END {print NF}' $1) #Get number of columns
+counter=0
+total=0
+a=($(awk '{for(i=1; i<=NF; i++) print $i}' $1)) #put the text file into an array
+for ((i=0; i<$numRows; i++)) #iterate through each row
+do
+	for((j=0; j<$numCols; j++)) #and iterate through each value in each row
+	do
+		total=$((total + ${a[counter]})) #add them up to the total
+		tempArr+=(${a[counter]}) #create temporary array to sort for median
+		((counter++)) #increase the counter to move to the next value
+	done
+	halves=$((numCols / 2)) #calculate the halves, used for rounding and median
+	tempArr=($(for each in ${tempArr[@]}; do echo $each; done | sort)) #Sort the temporary array
+	if [ $((numCols%2)) -eq 0 ]; #If the number of columns is even
+		then
+			index=$((halves + 1)) #Go to the higher middle
+			median=${tempArr[index]} 
+		else
+			index=$halves #go to the middle
+			median=${tempArr[index]}
+		fi
+	#echo $median
+	average=$((total + halves)) #make the numerator the total + halves
+	average=$((average / numCols)) #divide the numerator by the number of items
+	#echo $average
+	total=0 #reset total for the next one
+	unset tempArr #reset the tempArr for the next one
+	averageArr+=($average) #Add the averages to an array we'll print out later
+	medianArr+=($median) #Add the medians to an array we'll print out later
+done
+#Print out the values
+echo "Average Median"
+for((i=0;i<$numRows;i++))
+do
+	echo "${averageArr[i]}	${medianArr[i]}"
+done 
